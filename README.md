@@ -51,7 +51,7 @@ DownloadButton(
 This project uses the following key dependencies:
 - `dio`: For handling HTTP downloads
 - `permission_handler`: For managing storage permissions
-- `open_filex`: For opening downloaded files
+- `open_file`: For opening downloaded files
 
 ## Running the Example
 
