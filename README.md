@@ -59,10 +59,6 @@ This project uses the following key dependencies:
 2. Run `flutter pub get` to install dependencies
 3. Run the app using `flutter run`
 
-## Contributing
+## 📣 Author
 
-Feel free to submit issues and enhancement requests!
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+**Muhammed Iqbal** – [LinkedIn](https://linkedin.com/in/iqbaltld)

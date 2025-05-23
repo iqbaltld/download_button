@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:download_button/widgets/custom_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:download_button/widgets/custom_progress_indicator.dart';
 
 class DownloadButton extends StatefulWidget {
   const DownloadButton({super.key, required this.fileUrl});
@@ -17,6 +17,7 @@ class DownloadButton extends StatefulWidget {
 
 class _DownloadButtonState extends State<DownloadButton> {
   bool _isLoading = false;
+  double _progress = 0.0;
 
   Future<void> downloadFile() async {
     if (!mounted) return;
@@ -38,11 +39,11 @@ class _DownloadButtonState extends State<DownloadButton> {
         // Download the file
         await Dio().download(widget.fileUrl, filePath,
             onReceiveProgress: (received, total) {
-          // if (total != -1) {
-          // setState(() {
-          // Update UI with progress if needed
-          // });
-          // }
+          if (total != -1) {
+            setState(() {
+              _progress = (received / total);
+            });
+          }
         });
 
         // Open the downloaded file
@@ -53,7 +54,9 @@ class _DownloadButtonState extends State<DownloadButton> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to open file: ${e.toString()}'),
+                content: _isLoading
+                    ? CustomProgressIndicator(progress: _progress)
+                    : Text('Failed to open file: ${e.toString()}'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -121,10 +124,12 @@ class _DownloadButtonState extends State<DownloadButton> {
                     height: 16,
                   )
                 else
-                  const SizedBox(
+                  SizedBox(
                     width: 16,
                     height: 16,
-                    child: CustomProgressIndicator(),
+                    child: CustomProgressIndicator(
+                      progress: _progress,
+                    ),
                   )
               ],
             )),
